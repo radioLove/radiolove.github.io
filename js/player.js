@@ -1,46 +1,52 @@
 var player = $("#radio-player");
-var baseUrl = "audio/";
 var jingles = [];
 var songs = [];
 var usedSongs = [];
 var usedJingles = [];
 
 $(document).ready(function () {
-    $.get("https://api.github.com/repos/radiolove/radiolove.github.io/contents/audio/songs", function(songResults){
-        songs = JSON.parse(songResults);
+    try {
+        $.get("https://api.github.com/repos/radiolove/radiolove.github.io/contents/audio/songs", function(songResults){
+            songs = songResults;
 
-        $.get("https://api.github.com/repos/radiolove/radiolove.github.io/contents/audio/songs", function(jingleResults){
-            jingles = JSON.parse(jingleResults);
+            $.get("https://api.github.com/repos/radiolove/radiolove.github.io/contents/audio/jingles", function(jingleResults){
+                jingles = jingleResults;
+
+                if(songs.length === 0 && jingles.length === 0) {
+                    switchAudio(player, "audio/radio-love-55.mp3");
+
+                    return;
+                }
+
+                switchAudio(
+                    player,
+                    nextAudio()
+                );
+
+                player.on('ended', function(){
+                    switchAudio(
+                        $(this),
+                        nextAudio()
+                    );
+
+                    if(songs.length === 0) {
+                        songs = usedSongs;
+                        songs.length = usedSongs.length;
+                        usedSongs = [];
+                    }
+
+                    if(jingles.length === 0) {
+                        jingles = usedJingles;
+                        jingles.length = usedJingles.length;
+                        usedJingles = [];
+                    }
+                });
+            });
         });
+    } catch (e) {
+        switchAudio(player, "audio/radio-love-55.mp3")
+    }
 
-        if(songs.length === 0 && jingles.length === 0) {
-            return;
-        }
-
-        switchAudio(
-            player,
-            nextAudio()
-        );
-
-        player.on('ended', function(){
-            switchAudio(
-                $(this),
-                nextAudio()
-            );
-
-            if(songs.length === 0) {
-                songs = usedSongs;
-                songs.length = usedSongs.length;
-                usedSongs = [];
-            }
-
-            if(jingles.length === 0) {
-                jingles = usedJingles;
-                jingles.length = usedJingles.length;
-                usedJingles = [];
-            }
-        });
-    });
 });
 
 function switchAudio(player, src) {
@@ -57,15 +63,15 @@ function nextAudio() {
 
     if(dispersionIndex > 3) {
         index = getRandomIntInclusive(0, songs.length-1);
-        src = baseUrl+songs[index].path;
+        src = songs[index].path;
         usedSongs.push(songs.splice(index, 1));
     } else {
         index = getRandomIntInclusive(0, jingles.length-1);
-        src = baseUrl+jingles[index].path;
+        src = jingles[index].path;
         usedJingles.push(jingles.splice(index, 1))
     }
 
-    console.log(songs.length, usedSongs.length, jingles.length, usedJingles.length);
+    // console.log(songs.length, usedSongs.length, jingles.length, usedJingles.length);
 
     return src;
 }
