@@ -28,3 +28,5 @@ phpunit.phar
 /phpunit.xml
 
 /runtime
+.vercel
+node_modules

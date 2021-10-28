@@ -1,18 +1,23 @@
 {
-  "name": "Love FM",
-  "version": "0.0.3",
-  "release": "",
-  "description": "",
-  "author": "Lucerna & Javert",
-  "logo": "",
-  "bugs": "",
-  "license": "MIT",
-  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/radioLove/radiolove.github.io"
-  },
-  "scripts": {},
-  "keywords": [],
-  "devDependencies": {}
+    "name": "@kickass-dev/lovefm",
+    "version": "0.0.3",
+    "release": "",
+    "description": "",
+    "author": "Lucerna & Javert",
+    "logo": "",
+    "bugs": "",
+    "license": "MIT",
+    "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/radioLove/radiolove.github.io"
+    },
+    "scripts": {
+        "deploy": "vercel",
+        "deploy:production": "vercel --prod"
+    },
+    "keywords": [],
+    "devDependencies": {
+        "vercel": "^23.1.2"
+    }
 }
