@@ -29,3 +29,4 @@ phpunit.phar
 
 /runtime
 .vercel
+node_modules
